@@ -32,14 +32,14 @@ plot_CELseq2_qc <- DimPlot(seurat_CELseq2_qc, reduction = "pca", group.by = "cel
 plot_Dropseq_qc <- DimPlot(seurat_Dropseq_qc, reduction = "pca", group.by = "cell_line")
 
 # Output the plots into images
-png("output/3-cell-line-10x-pca-seurat", height = 1000, width = 1000)
+png("output/3-cell-line-10x-pca-seurat.png", height = 1000, width = 1000)
     plot_10x_qc
 dev.off()
 
-png("output/3-cell-line-CELseq2-pca-seurat", height = 1000, width = 1000)
+png("output/3-cell-line-CELseq2-pca-seurat.png", height = 1000, width = 1000)
     plot_CELseq2_qc
 dev.off()
 
-png("output/3-cell-line-Dropseq-pca-seurat", height = 1000, width = 1000)
+png("output/3-cell-line-Dropseq-pca-seurat.png", height = 1000, width = 1000)
     plot_Dropseq_qc
 dev.off()
