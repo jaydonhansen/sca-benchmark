@@ -27,10 +27,19 @@ seurat_Dropseq_qc <- sce_sc_Dropseq_qc %>%
 rm(sce_sc_Dropseq_qc) # Save memory
 
 # Some PCA plots
-p1 <- DimPlot(seurat_10x_qc, reduction = "pca", group.by = "cell_line")
-p2 <- DimPlot(seurat_CELseq2_qc, reduction = "pca", group.by = "cell_line")
-p3 <- DimPlot(seurat_Dropseq_qc, reduction = "pca", group.by = "cell_line")
+plot_10x_qc <- DimPlot(seurat_10x_qc, reduction = "pca", group.by = "cell_line")
+plot_CELseq2_qc <- DimPlot(seurat_CELseq2_qc, reduction = "pca", group.by = "cell_line")
+plot_Dropseq_qc <- DimPlot(seurat_Dropseq_qc, reduction = "pca", group.by = "cell_line")
 
-p1
-p2
-p3
+# Output the plots into images
+png("output/3-cell-line-10x-pca-seurat", height = 1000, width = 1000)
+    plot_10x_qc
+dev.off()
+
+png("output/3-cell-line-CELseq2-pca-seurat", height = 1000, width = 1000)
+    plot_CELseq2_qc
+dev.off()
+
+png("output/3-cell-line-Dropseq-pca-seurat", height = 1000, width = 1000)
+    plot_Dropseq_qc
+dev.off()
