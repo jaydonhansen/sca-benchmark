@@ -1,3 +1,5 @@
+library(scran)
+library(scater)
 library(dplyr)
 library(Seurat)
 library(SingleCellExperiment)
@@ -9,41 +11,43 @@ load("data/sincell_with_class_5cl.RData")
 # Pipe the 10x datasets through the regular PCA/t-SNE pipeline in Seurat
 seurat_10x_3cl <- sce_sc_10x_qc %>% 
     as.Seurat(counts = "counts", data = "logcounts") %>%
-    FindVariableFeatures() %>% ScaleData() %>% RunPCA() %>% RunTSNE %>% RunUMAP(dims = 1:5)
+    FindVariableFeatures() %>% ScaleData() %>% RunPCA() %>% FindNeighbors() %>% FindClusters(reduction.type = "pca", dims.use = 1:5) %>%
+    RunTSNE %>% RunUMAP(dims = 1:5)
+colData(sce_sc_10x_qc)$clustering_res <- as.factor(seurat_10x_3cl@active.ident)
 
 # Pipe the 10x datasets through the regular PCA/t-SNE pipeline in Seurat
 seurat_10x_5cl <- sce_sc_10x_5cl_qc %>% 
     as.Seurat(counts = "counts", data = "logcounts") %>%
-    FindVariableFeatures() %>% ScaleData() %>% RunPCA() %>% RunTSNE %>% RunUMAP(dims = 1:5)
-
-rm(sce_sc_10x_qc, sce_sc_10x_5cl_qc) # Save memory
-
+    FindVariableFeatures() %>% ScaleData() %>% RunPCA() %>% FindNeighbours() %>% FindClusters(reduction.type = "pca") %>% RunTSNE %>% RunUMAP(dims = 1:5)
+colData(sce_sc_10x_5cl_qc)$clustering_res <- as.factor(seurat_10x_5cl@active.ident)
 
 # Pipe the CELLseq2 datasets through the regular PCA/t-SNE pipeline in Seurat
 seurat_CELseq2_3cl <- sce_sc_CELseq2_qc %>%
     as.Seurat(counts = "counts", data = "logcounts") %>%
-    FindVariableFeatures() %>% ScaleData() %>% RunPCA() %>% RunTSNE %>% RunUmap(dims = 1:5)
+    FindVariableFeatures() %>% ScaleData() %>% RunPCA() %>% FindNeighbors() %>% FindClusters(reduction.type = "pca") %>% RunTSNE %>% RunUMAP(dims = 1:5)
+colData(sce_sc_CELseq2_qc)$clustering_res <- as.factor(seurat_CELseq2_3cl@active.ident)
+
 
 seurat_CELseq2_5cl_p1 <- sc_Celseq2_5cl_p1 %>% 
     as.Seurat(counts = "counts", data = "logcounts") %>%
-    FindVariableFeatures() %>% ScaleData() %>% RunPCA() %>% RunTSNE %>% RunUmap(dims = 1:5)
+    FindVariableFeatures() %>% ScaleData() %>% RunPCA() %>% FindNeighbours() %>% FindClusters(reduction.type = "pca") %>% RunTSNE %>% RunUMAP(dims = 1:5)
+colData(sc_Celseq2_5cl_p1)$clustering_res <- as.factor(seurat_CELseq2_5cl_p1@active.ident)
 
 seurat_CELseq2_5cl_p2 <- sc_Celseq2_5cl_p2 %>% 
     as.Seurat(counts = "counts", data = "logcounts") %>%
-    FindVariableFeatures() %>% ScaleData() %>% RunPCA() %>% RunTSNE %>% RunUmap(dims = 1:5)
+    FindVariableFeatures() %>% ScaleData() %>% RunPCA() %>% FindNeighbours() %>% FindClusters(reduction.type = "pca") %>% RunTSNE %>% RunUMAP(dims = 1:5)
+colData(sc_Celseq2_5cl_p2)$clustering_res <- as.factor(seurat_CELseq2_5cl_p2@active.ident)
 
 seurat_CELseq2_5cl_p3 <- sc_Celseq2_5cl_p3 %>% 
     as.Seurat(counts = "counts", data = "logcounts") %>%
-    FindVariableFeatures() %>% ScaleData() %>% RunPCA() %>% RunTSNE %>% RunUmap(dims = 1:5)
-
-rm(sce_sc_CELseq2_qc, sc_Celseq2_5cl_p1, sc_Celseq2_5cl_p2, sc_Celseq2_5cl_p3) # Save memory
-
+    FindVariableFeatures() %>% ScaleData() %>% RunPCA() %>% FindNeighbours() %>% FindClusters(reduction.type = "pca") %>% RunTSNE %>% RunUMAP(dims = 1:5)
+colData(sc_Celseq2_5cl_p3)$clustering_res <- as.factor(seurat_CELseq2_5cl_p3@active.ident)
+ 
 # Pipe the Dropseq datasets through the regular PCA/t-SNE pipeline in Seurat
 seurat_Dropseq_3cl <- sce_sc_Dropseq_qc %>% 
     as.Seurat(counts = "counts", data = "logcounts") %>%
-    FindVariableFeatures() %>% ScaleData() %>% RunPCA() %>% RunTSNE %>% RunUmap(dims = 1:5)
-
-rm(sce_sc_Dropseq_qc) # Save memory
+    FindVariableFeatures() %>% ScaleData() %>% RunPCA() %>% FindNeighbours() %>% FindClusters(reduction.type = "pca") %>% RunTSNE %>% RunUMAP(dims = 1:5)
+colData(sce_sc_Dropseq_qc)$clustering_res <- as.factor(seurat_Dropseq_3cl@active.ident)
 
 # PCA/t-SNE plots for 10x
 pca_plot_10x_3cl <- DimPlot(seurat_10x_3cl, reduction = "pca", group.by = "cell_line")
